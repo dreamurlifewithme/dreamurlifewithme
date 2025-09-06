@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .prize-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .prize-section h3 {
+            color: #91eae4;
+            margin-bottom: 20px;
+        }
+        .prize-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .prize-item {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+        }
+        .prize-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .prize-item p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        .prize-item .position {
+            font-weight: bold;
+            color: #feb47b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><%= title %></h1>
+        <p>More content will be added here.</p>
+        <nav>
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+            <a href="/admin/login">Admin Login</a>
+        </nav>
+
+        <div class="prize-section">
+            <h3>Our Exciting Prizes!</h3>
+            <div class="prize-grid">
+                <% prizes.forEach(prize => { %>
+                    <div class="prize-item">
+                        <img src="<%= prize.image %>" alt="<%= prize.name %>">
+                        <p class="position"><%= prize.position %> Prize</p>
+                        <p><%= prize.name %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

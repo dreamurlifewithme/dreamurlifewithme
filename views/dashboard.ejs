@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - DREAMURLIFEWITHME</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* ... (existing styles) ... */
+        .user-stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-stats div {
+            text-align: center;
+        }
+        .user-stats div p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        .user-stats div span {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #91eae4;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="profile-pic-container">
+            <img src="<%= user.profile_pic || '/images/default_profile.svg' %>" alt="Profile Picture" class="profile-pic">
+            <a href="/upload-photo">Add/Change Photo</a>
+        </div>
+
+        <h2>Welcome, <%= user.name %>!</h2>
+        <div class="user-details">
+            <p><strong>User ID:</strong> <%= user.id %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <p><strong>Date of Birth:</strong> <%= user.dob %></p>
+            <p><strong>City:</strong> <%= user.city %></p>
+            <p><strong>Contact:</strong> <%= user.contact %></p>
+            <p><a href="/edit-profile" style="color: #86a8e7; text-decoration: none;">Edit Profile</a></p>
+        </div>
+
+        <div class="user-stats">
+            <div>
+                <p>Total Users Registered</p>
+                <span><%= totalUsers %></span>
+            </div>
+            <div>
+                <p>Active Users</p>
+                <span><%= activeUsers %></span>
+            </div>
+        </div>
+
+        <div class="draw-status">
+            <% if (user.is_winner) { %>
+                <p class="winner-message">Congratulations! You are a winner!</p>
+                <p>Your prize position: <strong><%= user.winner_position %></strong></p>
+            <% } else { %>
+                <p>Draw not yet completed or you are not a winner.</p>
+            <% } %>
+        </div>
+
+        <div class="prize-section">
+            <h3>Our Exciting Prizes!</h3>
+            <div class="prize-grid">
+                <% prizes.forEach(prize => { %>
+                    <div class="prize-item">
+                        <img src="<%= prize.image %>" alt="<%= prize.name %>">
+                        <p class="position"><%= prize.position %> Prize</p>
+                        <p><%= prize.name %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <form action="/logout" method="POST">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+
+        <div class="contact-info">
+            <p>Contact: 8341569495 | E-mail: <a href="mailto:dreamurlifewithme@gmail.com">dreamurlifewithme@gmail.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

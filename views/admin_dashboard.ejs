@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DREAMURLIFEWITHME</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* ... (existing styles) ... */
+        .admin-dashboard-container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 1000px;
+            margin: 50px auto;
+        }
+        .admin-dashboard-container h2 {
+            color: #feb47b;
+            margin-bottom: 20px;
+        }
+        .user-stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-stats div {
+            text-align: center;
+        }
+        .user-stats div p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        .user-stats div span {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #91eae4;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .user-table th, .user-table td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: left;
+            color: white;
+        }
+        .user-table th {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .user-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .action-buttons button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .action-buttons button.deactivate {
+            background-color: #f44336;
+        }
+        .action-buttons button.delete {
+            background-color: #e74c3c;
+        }
+        .action-buttons button:hover {
+            opacity: 0.8;
+        }
+        .admin-dashboard-container .logout-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .admin-dashboard-container .logout-button:hover {
+            background-color: #d32f2f;
+        }
+        .winner-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .winner-section h3 {
+            color: #91eae4;
+            margin-bottom: 20px;
+        }
+        .winner-list {
+            list-style: none;
+            padding: 0;
+        }
+        .winner-list li {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .winner-list li span {
+            font-weight: bold;
+            color: #feb47b;
+        }
+        .prize-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .prize-section h3 {
+            color: #91eae4;
+            margin-bottom: 20px;
+        }
+        .prize-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .prize-item {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+        }
+        .prize-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .prize-item p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        .prize-item .position {
+            font-weight: bold;
+            color: #feb47b;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard-container">
+        <h2>Admin Dashboard</h2>
+        <% if (message) { %>
+            <p class="message"><%= message %></p>
+        <% } %>
+
+        <div class="user-stats">
+            <div>
+                <p>Total Users Registered</p>
+                <span><%= totalUsers %></span>
+            </div>
+            <div>
+                <p>Active Users</p>
+                <span><%= activeUsers %></span>
+            </div>
+        </div>
+
+        <h3>Registered Users</h3>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.id %></td>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.contact %></td>
+                        <td><%= user.status %></td>
+                        <td class="action-buttons">
+                            <form action="/admin/toggle-status/<%= user.id %>" method="POST" style="display:inline;">
+                                <button type="submit" class="<%= user.status === 'Active' ? 'deactivate' : '' %>">
+                                    <%= user.status === 'Active' ? 'Deactivate' : 'Activate' %>
+                                </button>
+                            </form>
+                            <form action="/admin/delete-user/<%= user.id %>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <button type="submit" class="delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+                <% if (users.length === 0) { %>
+                    <tr>
+                        <td colspan="6">No users registered yet.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <div class="winner-section">
+            <h3>Draw Results</h3>
+            <% if (winners && winners.length > 0) { %>
+                <ul class="winner-list">
+                    <% winners.forEach(winner => { %>
+                        <li>
+                            <span><%= winner.winner_position %> Prize:</span>
+                            <%= winner.name %> (<%= winner.id %>) - <%= winner.email %>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>Draw not yet completed or no winners declared.</p>
+            <% } %>
+        </div>
+
+        <div class="prize-section">
+            <h3>Our Exciting Prizes!</h3>
+            <div class="prize-grid">
+                <% prizes.forEach(prize => { %>
+                    <div class="prize-item">
+                        <img src="<%= prize.image %>" alt="<%= prize.name %>">
+                        <p class="position"><%= prize.position %> Prize</p>
+                        <p><%= prize.name %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <form action="/admin/logout" method="POST">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
